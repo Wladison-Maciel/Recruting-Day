@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificador de Força de Senha</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Verificador de Senha</h2>
+    <input type="password" id="senha" placeholder="Digite sua senha..." oninput="verificarSenha()">
+    <div class="bar-container">
+      <div id="bar" class="bar"></div>
+    </div>
+    <div class="resultado" id="resultado">Digite uma senha</div>
+  </div>
+
+  <script>
+    function verificarForcaSenha(senha) {
+      const criterios = {
+        tamanhoMinimo: senha.length >= 8,
+        maiuscula: /[A-Z]/.test(senha),
+        minuscula: /[a-z]/.test(senha),
+        numero: /[0-9]/.test(senha),
+        especial: /[!@#$%^&*(),.?":{}|<>]/.test(senha),
+      };
+
+      let pontos = Object.values(criterios).filter(v => v).length;
+
+      let nivel;
+      if (pontos <= 2) nivel = "Fraca";
+      else if (pontos === 3 || pontos === 4) nivel = "Média";
+      else nivel = "Forte";
+
+      return { nivel, pontos };
+    }
+
+    function verificarSenha() {
+      const senha = document.getElementById("senha").value;
+      const resultado = document.getElementById("resultado");
+      const bar = document.getElementById("bar");
+
+      if (!senha) {
+        resultado.innerText = "Digite uma senha";
+        bar.style.width = "0%";
+        bar.className = "bar";
+        return;
+      }
+
+      const { nivel, pontos } = verificarForcaSenha(senha);
+
+      resultado.innerText = "Força da senha: " + nivel;
+
+      if (nivel === "Fraca") {
+        bar.style.width = "33%";
+        bar.className = "bar fraca";
+      } else if (nivel === "Média") {
+        bar.style.width = "66%";
+        bar.className = "bar media";
+      } else {
+        bar.style.width = "100%";
+        bar.className = "bar forte";
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Testar JS Cripto</title>
+</head>
+<body>
+  <h2>Validação de carteira e ordenação de transações</h2>
+  <pre id="saida"></pre>
+
+  <script>
+    function validarEnderecoCarteira(endereco) {
+      const regex = /^0x[a-fA-F0-9]{40}$/;
+      return regex.test(endereco);
+    }
+
+    function ordenarTransacoes(transacoes) {
+      return transacoes.sort((a, b) => b.valor - a.valor);
+    }
+
+    const enderecos = [
+      "0x1234567890abcdef1234567890abcdef12345678",
+      "0xZZZ4567890abcdef1234567890abcdef12345678"
+    ];
+
+    const transacoes = [
+      { endereco: "0xabc1234567890abcdef1234567890abcdef1234", valor: 250 },
+      { endereco: "0xdef1234567890abcdef1234567890abcdef1234", valor: 1000 },
+      { endereco: "0xghi1234567890abcdef1234567890abcdef1234", valor: 500 }
+    ];
+
+    const saida = document.getElementById("saida");
+    saida.innerText += "Validação de endereços:\n";
+    enderecos.forEach(e => {
+      saida.innerText += `${e} -> ${validarEnderecoCarteira(e)}\n`;
+    });
+
+    saida.innerText += "\nTransações ordenadas:\n";
+    ordenarTransacoes(transacoes).forEach(t => {
+      saida.innerText += `${t.endereco} : ${t.valor}\n`;
+    });
+  </script>
+</body>
+</html>
